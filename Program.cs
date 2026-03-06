@@ -9,6 +9,7 @@ builder.Services.AddControllers();
 builder.Services.AddTransient<IUnityOfWork, UnityOfWork>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<ICheckInRepository, CheckInRepository>();
+builder.Services.AddTransient<IExerciseRepository, ExerciseRepository>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

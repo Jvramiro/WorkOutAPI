@@ -2,5 +2,5 @@ using WorkOutAPI.Models;
 
 namespace WorkOutAPI.DTO
 {
-    public record UserUpdateDTO(string? Username, ICollection<Exercise>? Schedule);
+    public record UserUpdateDTO(string? Username, ICollection<int>? Schedule);
 }

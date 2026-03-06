@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using WorkOutAPI.Data;
 using WorkOutAPI.DTO;
+using WorkOutAPI.Models;
 using WorkOutAPI.Repositories;
 
 namespace WorkOutAPI.Controllers
@@ -10,10 +11,12 @@ namespace WorkOutAPI.Controllers
     public class UsersController : ControllerBase
     {
         private IUserRepository userRepository;
+        private IExerciseRepository exerciseRepository;
         private IUnityOfWork unityOfWork;
-        public UsersController(IUserRepository userRepository, IUnityOfWork unityOfWork)
+        public UsersController(IUserRepository userRepository, IExerciseRepository exerciseRepository, IUnityOfWork unityOfWork)
         {
             this.userRepository = userRepository;
+            this.exerciseRepository = exerciseRepository;
             this.unityOfWork = unityOfWork;
         }
 
@@ -65,7 +68,24 @@ namespace WorkOutAPI.Controllers
             }
 
             user.Username = model.Username ?? user.Username;
-            user.Schedule = model.Schedule ?? user.Schedule;
+
+            if(model.Schedule != null)
+            {
+                var schedule = new List<Exercise>();
+                foreach(var exerciseId in model.Schedule)
+                {
+                    var exercise = await exerciseRepository.GetById(exerciseId);
+
+                    if(exercise == null)
+                    {
+                        return NotFound($"Exercise with Id {exerciseId} not found");
+                    }
+
+                    schedule.Add(exercise);
+                }
+
+                user.Schedule = schedule;
+            }
 
             await userRepository.Update(user);
             await unityOfWork.Commit();
