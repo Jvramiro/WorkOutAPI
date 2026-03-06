@@ -64,6 +64,9 @@ namespace WorkOutAPI.Controllers
                 return NotFound("User not found");
             }
 
+            user.Username = model.Username ?? user.Username;
+            user.Schedule = model.Schedule ?? user.Schedule;
+
             await userRepository.Update(user);
             await unityOfWork.Commit();
 
