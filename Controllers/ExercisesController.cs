@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WorkOutAPI.Data;
 using WorkOutAPI.DTO;
@@ -22,6 +19,7 @@ namespace WorkOutAPI.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetList([FromQuery] int page = 1, [FromQuery] int size = 30)
         {
             if(page < 0 || size < 0)
@@ -39,6 +37,7 @@ namespace WorkOutAPI.Controllers
         }
 
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetById(int id)
         {
             var exercise = await exerciseRepository.GetById(id);
@@ -52,6 +51,7 @@ namespace WorkOutAPI.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update(int id, [FromBody] ExerciseUpdateDTO model)
         {
             if (!ModelState.IsValid)
@@ -76,6 +76,7 @@ namespace WorkOutAPI.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Remove(int id)
         {
             var exercise = await exerciseRepository.GetById(id);

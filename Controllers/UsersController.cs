@@ -1,3 +1,5 @@
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WorkOutAPI.Data;
 using WorkOutAPI.DTO;
@@ -21,6 +23,7 @@ namespace WorkOutAPI.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetList([FromQuery] int page = 1, [FromQuery] int size = 10)
         {
             if(page < 0 || size < 0)
@@ -39,6 +42,7 @@ namespace WorkOutAPI.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetById(int id)
         {
             var user = await userRepository.GetById(id);
@@ -53,15 +57,21 @@ namespace WorkOutAPI.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> Update(int id, [FromBody] UserUpdateDTO model)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
+
+            bool isOwner = User.FindFirst(ClaimTypes.Email)?.Value == id.ToString();
+            if(!User.IsInRole("Admin") && !isOwner)
+            {
+                return Forbid("You are not authorized");
+            }
             
             var user = await userRepository.GetById(id);
-            
             if(user == null)
             {
                 return NotFound("User not found");
@@ -94,8 +104,15 @@ namespace WorkOutAPI.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> Remove(int id)
         {
+            bool isOwner = User.FindFirst(ClaimTypes.Email)?.Value == id.ToString();
+            if(!User.IsInRole("Admin") && !isOwner)
+            {
+                return Forbid("You are not authorized");
+            }
+
             var user = await userRepository.GetById(id);
             
             if(user == null)

@@ -1,8 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WorkOutAPI.Data;
 using WorkOutAPI.DTO;
@@ -24,6 +21,7 @@ namespace WorkOutAPI.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] UserLoginDTO model)
         {
             var user = await userRepository.GetByEmail(model.Email);
@@ -51,6 +49,7 @@ namespace WorkOutAPI.Controllers
         }
 
         [HttpPost("refresh")]
+        [Authorize]
         public async Task<IActionResult> Refresh([FromBody] string refreshToken)
         {
             var email = User.FindFirstValue(ClaimTypes.Email);
