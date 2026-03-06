@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WorkOutAPI.Data;
 using WorkOutAPI.DTO;
+using WorkOutAPI.Models;
 using WorkOutAPI.Repositories;
 
 namespace WorkOutAPI.Controllers
@@ -48,6 +49,27 @@ namespace WorkOutAPI.Controllers
             }
 
             return Ok(exercise);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Create([FromBody] ExerciseCreateDTO model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var exercise = new Exercise()
+            {
+                Name = model.Name,
+                Group = model.Group
+            };
+
+            await exerciseRepository.Add(exercise);
+            await unityOfWork.Commit();
+
+            return Ok($"Exercise {exercise.Name} successfully created");
         }
 
         [HttpPut("{id}")]
