@@ -1,4 +1,4 @@
-namespace PetShopAPI.Data
+namespace WorkOutAPI.Data
 {
     public interface IUnityOfWork
     {

@@ -1,6 +1,4 @@
-using WorkOutAPI.Data;
-
-namespace PetShopAPI.Data
+namespace WorkOutAPI.Data
 {
     public class UnityOfWork : IUnityOfWork
     {
