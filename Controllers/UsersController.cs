@@ -50,7 +50,7 @@ namespace WorkOutAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, UserUpdateDTO model)
+        public async Task<IActionResult> Update(int id, [FromBody] UserUpdateDTO model)
         {
             if (!ModelState.IsValid)
             {
