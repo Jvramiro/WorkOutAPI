@@ -5,6 +5,7 @@ namespace WorkOutAPI.Repositories
     public interface IUserRepository
     {
         Task<IEnumerable<User>> GetList(int page = 1, int size = 10);
+        Task<User?> GetByEmail(string email);
         Task<User?> GetById(int id);
         Task Add(User user);
         Task Update(User user);

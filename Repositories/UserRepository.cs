@@ -21,6 +21,11 @@ namespace WorkOutAPI.Repositories
             return await dbContext.Users.AsNoTracking().FirstOrDefaultAsync(i => i.Id == id);
         }
 
+        public async Task<User?> GetByEmail(string email)
+        {
+            return await dbContext.Users.AsNoTracking().FirstOrDefaultAsync(i => i.Email == email);
+        }
+
         public async Task Add(User user)
         {
             await dbContext.Users.AddAsync(user);
