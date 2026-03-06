@@ -1,9 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using WorkOutAPI.Data;
+using WorkOutAPI.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+
+builder.Services.AddTransient<IUnityOfWork, UnityOfWork>();
+builder.Services.AddTransient<IUserRepository, UserRepository>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
