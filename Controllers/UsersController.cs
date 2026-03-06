@@ -65,7 +65,7 @@ namespace WorkOutAPI.Controllers
                 return BadRequest();
             }
 
-            bool isOwner = User.FindFirst(ClaimTypes.Email)?.Value == id.ToString();
+            bool isOwner = User.FindFirst(ClaimTypes.NameIdentifier)?.Value == id.ToString();
             if(!User.IsInRole("Admin") && !isOwner)
             {
                 return Forbid("You are not authorized");
@@ -107,7 +107,7 @@ namespace WorkOutAPI.Controllers
         [Authorize]
         public async Task<IActionResult> Remove(int id)
         {
-            bool isOwner = User.FindFirst(ClaimTypes.Email)?.Value == id.ToString();
+            bool isOwner = User.FindFirst(ClaimTypes.NameIdentifier)?.Value == id.ToString();
             if(!User.IsInRole("Admin") && !isOwner)
             {
                 return Forbid("You are not authorized");
