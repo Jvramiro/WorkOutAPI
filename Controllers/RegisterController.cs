@@ -3,6 +3,7 @@ using WorkOutAPI.Data;
 using WorkOutAPI.DTO;
 using WorkOutAPI.Models;
 using WorkOutAPI.Repositories;
+using WorkOutAPI.Services;
 
 namespace WorkOutAPI.Controllers
 {
@@ -33,7 +34,7 @@ namespace WorkOutAPI.Controllers
             }
 
             //To do: Hash Password
-            string passwordHash = model.Password;
+            string passwordHash = PasswordHashService.HashPassword(model.Password);
             //To do: Refresh Token
             string refreshToken = Guid.NewGuid().ToString();
 
