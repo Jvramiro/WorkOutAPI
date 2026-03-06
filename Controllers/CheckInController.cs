@@ -47,6 +47,33 @@ namespace WorkOutAPI.Controllers
             return Ok(result);
         }
 
+        [HttpGet("self")]
+        [Authorize]
+        public async Task<IActionResult> GetListBySelfId([FromQuery] int page = 1, [FromQuery] int size = 10)
+        {
+            if(page < 0 || size < 0)
+            {
+                return BadRequest("Invalid Page or Size parameters");
+            }
+
+            if(size > 100)
+            {
+                return BadRequest("Size should be positive and less or equal than 100");
+            }
+
+            var email = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var user = !string.IsNullOrEmpty(email) ? await userRepository.GetByEmail(email) : null;
+
+            if(user == null)
+            {
+                return BadRequest("User not found");
+            }
+
+            var result = await checkInRepository.GetListByUserId(user.Id, page, size);
+            return Ok(result);
+        }
+
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> Create([FromBody] CheckInCreateDTO model)
