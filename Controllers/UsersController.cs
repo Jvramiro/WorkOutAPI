@@ -11,7 +11,7 @@ namespace WorkOutAPI.Controllers
     {
         private IUserRepository userRepository;
         private IUnityOfWork unityOfWork;
-        public UsersController(IUserRepository  userRepository, IUnityOfWork unityOfWork)
+        public UsersController(IUserRepository userRepository, IUnityOfWork unityOfWork)
         {
             this.userRepository = userRepository;
             this.unityOfWork = unityOfWork;

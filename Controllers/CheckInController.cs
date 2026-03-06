@@ -45,7 +45,7 @@ namespace WorkOutAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CheckInCreateDTO model)
+        public async Task<IActionResult> Create([FromBody] CheckInCreateDTO model)
         {
             if(!ModelState.IsValid)
             {
