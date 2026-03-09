@@ -14,10 +14,12 @@ namespace WorkOutAPI.Controllers
     {
         private IUserRepository userRepository;
         private IUnityOfWork unityOfWork;
-        public LoginController(IUserRepository  userRepository, IUnityOfWork unityOfWork)
+        private TokenService tokenService;
+        public LoginController(IUserRepository  userRepository, IUnityOfWork unityOfWork, TokenService tokenService)
         {
             this.userRepository = userRepository;
             this.unityOfWork = unityOfWork;
+            this.tokenService = tokenService;
         }
 
         [HttpPost]
@@ -37,8 +39,8 @@ namespace WorkOutAPI.Controllers
                 return NotFound("Invalid user or password");
             }
 
-            var token = TokenService.GenerateToken(user);
-            var refreshToken = TokenService.GenerateRefreshToken();
+            var token = tokenService.GenerateToken(user);
+            var refreshToken = tokenService.GenerateRefreshToken();
 
             user.RefreshToken = refreshToken;
             await userRepository.Update(user);
@@ -61,8 +63,8 @@ namespace WorkOutAPI.Controllers
                 return Unauthorized("Invalid refreshToken");
             }
 
-            var newToken = TokenService.GenerateToken(user);
-            var newRefreshToken = TokenService.GenerateRefreshToken();
+            var newToken = tokenService.GenerateToken(user);
+            var newRefreshToken = tokenService.GenerateRefreshToken();
 
             user.RefreshToken = newRefreshToken;
             await userRepository.Update(user);

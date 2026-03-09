@@ -9,16 +9,22 @@ namespace WorkOutAPI.Services
 {
     public class TokenService
     {
-        public static string GenerateToken(User user)
+        private readonly string key;
+        public TokenService(IConfiguration configuration)
+        {
+            key = configuration["Security:JwtKey"]!;
+        }
+
+        public string GenerateToken(User user)
         {
             var handler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(GetKey());
+            var encodedKey = Encoding.ASCII.GetBytes(key);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = GenerateClaims(user),
                 Expires = DateTime.UtcNow.AddHours(8),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(encodedKey), SecurityAlgorithms.HmacSha256Signature)
             };
 
             var token = handler.CreateToken(tokenDescriptor);
@@ -26,7 +32,7 @@ namespace WorkOutAPI.Services
             
             return tokenString;
         }
-        public static ClaimsIdentity GenerateClaims(User user)
+        public ClaimsIdentity GenerateClaims(User user)
         {
             var ci = new ClaimsIdentity();
             ci.AddClaim(new Claim(ClaimTypes.Name, user.Username));
@@ -35,16 +41,12 @@ namespace WorkOutAPI.Services
             ci.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
             return ci;
         }
-        public static string GenerateRefreshToken()
+        public string GenerateRefreshToken()
         {
             var randomNumber = new byte[32];
             using var rng = RandomNumberGenerator.Create();
             rng.GetBytes(randomNumber);
             return Convert.ToBase64String(randomNumber);
-        }
-        public static string GetKey()
-        {
-            return "8a8744592a434fcbb3e32c70c4c7e982";
         }
     }
 }

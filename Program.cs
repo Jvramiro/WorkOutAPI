@@ -10,7 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-var encodedKey = Encoding.ASCII.GetBytes(TokenService.GetKey());
+var key = builder.Configuration["Security:JwtKey"];
+var encodedKey = Encoding.ASCII.GetBytes(key!);
 
 builder.Services.AddAuthentication(i => {
     i.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -32,6 +33,7 @@ builder.Services.AddTransient<IUnityOfWork, UnityOfWork>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<ICheckInRepository, CheckInRepository>();
 builder.Services.AddTransient<IExerciseRepository, ExerciseRepository>();
+builder.Services.AddSingleton<TokenService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

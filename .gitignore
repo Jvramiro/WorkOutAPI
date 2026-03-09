@@ -402,3 +402,6 @@ FodyWeavers.xsd
 
 #SqLite Database
 *.db
+
+#Env
+.env
