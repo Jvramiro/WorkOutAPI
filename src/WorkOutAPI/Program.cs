@@ -2,6 +2,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using SuaApi.Configurations;
 using WorkOutAPI.Data;
 using WorkOutAPI.Repositories;
 using WorkOutAPI.Services;
@@ -36,7 +37,7 @@ builder.Services.AddTransient<IExerciseRepository, ExerciseRepository>();
 builder.Services.AddSingleton<TokenService>();
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerConfiguration();
 
 builder.Services.AddDbContext<AppDbContext>(options => 
     options.UseSqlite(
@@ -46,10 +47,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 var app = builder.Build();
 
-if(app.Environment.IsDevelopment()){
+// if(app.Environment.IsDevelopment()){
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+// }
 
 app.UseHttpsRedirection();
 app.UseAuthentication();
