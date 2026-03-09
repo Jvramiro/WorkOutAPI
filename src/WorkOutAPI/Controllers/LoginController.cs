@@ -15,7 +15,7 @@ namespace WorkOutAPI.Controllers
         private IUserRepository userRepository;
         private IUnityOfWork unityOfWork;
         private TokenService tokenService;
-        public LoginController(IUserRepository  userRepository, IUnityOfWork unityOfWork, TokenService tokenService)
+        public LoginController(IUserRepository userRepository, IUnityOfWork unityOfWork, TokenService tokenService)
         {
             this.userRepository = userRepository;
             this.unityOfWork = unityOfWork;
@@ -30,13 +30,13 @@ namespace WorkOutAPI.Controllers
 
             if(user == null)
             {
-                return NotFound("Invalid user or password");
+                return NotFound("Invalid e-mail or password");
             }
 
             bool isValid = PasswordHashService.VerifyPassword(model.Password, user.PasswordHash);
             if (!isValid)
             {
-                return NotFound("Invalid user or password");
+                return NotFound("Invalid e-mail or password");
             }
 
             var token = tokenService.GenerateToken(user);
