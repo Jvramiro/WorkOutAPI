@@ -12,7 +12,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 var key = builder.Configuration["Security:JwtKey"];
-var encodedKey = Encoding.ASCII.GetBytes(key!);
+if (string.IsNullOrEmpty(key)){
+    throw new Exception("Security:JwtKey environment variable not configured");
+}
+
+var encodedKey = Encoding.ASCII.GetBytes(key);
 
 builder.Services.AddAuthentication(i => {
     i.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -62,6 +66,8 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     db.Database.Migrate();
+
+    await DbSeeder.Seed(db);
 }
 
 app.Run();
