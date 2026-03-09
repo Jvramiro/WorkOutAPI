@@ -13,12 +13,12 @@ namespace WorkOutAPI.Repositories
 
         public async Task<IEnumerable<CheckIn>> GetListByUserId(int id, int page = 1, int size = 10)
         {
-            return await dbContext.CheckIns.AsNoTracking().OrderBy(i => i.Id).Where(i => i.UserId == id).Skip((page - 1) * size).Take(size).ToListAsync();
+            return await dbContext.CheckIns.Include(i => i.User).OrderBy(i => i.Id).Where(i => i.UserId == id).Skip((page - 1) * size).Take(size).ToListAsync();
         }
 
         public async Task<CheckIn?> GetById(int id)
         {
-            return await dbContext.CheckIns.AsNoTracking().FirstOrDefaultAsync(i => i.Id == id);
+            return await dbContext.CheckIns.Include(i => i.User).FirstOrDefaultAsync(i => i.Id == id);
         }
 
         public async Task Add(CheckIn checkIn)

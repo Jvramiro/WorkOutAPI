@@ -43,7 +43,8 @@ namespace WorkOutAPI.Controllers
                 return BadRequest("User not found");
             }
 
-            var result = await checkInRepository.GetListByUserId(user.Id, page, size);
+            var list = await checkInRepository.GetListByUserId(user.Id, page, size);
+            var result = list.Select(i => new CheckInGetDTO(i.Id, i.User?.Username ?? "", i.Date));
             return Ok(result);
         }
 
@@ -70,7 +71,8 @@ namespace WorkOutAPI.Controllers
                 return BadRequest("User not found");
             }
 
-            var result = await checkInRepository.GetListByUserId(user.Id, page, size);
+            var list = await checkInRepository.GetListByUserId(user.Id, page, size);
+            var result = list.Select(i => new CheckInGetDTO(i.Id, i.User?.Username ?? "", i.Date));
             return Ok(result);
         }
 
