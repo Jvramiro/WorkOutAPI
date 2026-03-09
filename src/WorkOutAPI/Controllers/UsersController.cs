@@ -68,7 +68,7 @@ namespace WorkOutAPI.Controllers
             bool isOwner = User.FindFirst(ClaimTypes.NameIdentifier)?.Value == id.ToString();
             if(!User.IsInRole("Admin") && !isOwner)
             {
-                return Forbid("You are not authorized");
+                return Forbid();
             }
             
             var user = await userRepository.GetById(id);
@@ -110,7 +110,7 @@ namespace WorkOutAPI.Controllers
             bool isOwner = User.FindFirst(ClaimTypes.NameIdentifier)?.Value == id.ToString();
             if(!User.IsInRole("Admin") && !isOwner)
             {
-                return Forbid("You are not authorized");
+                return Forbid();
             }
 
             var user = await userRepository.GetById(id);
