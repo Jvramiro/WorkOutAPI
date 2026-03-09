@@ -1,0 +1,15 @@
+services:
+  workoutapi:
+    build:
+      context: ./src/WorkOutAPI
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - Security__JwtKey=${Security__JwtKey}
+      - ASPNETCORE_ENVIRONMENT=Development
+    volumes:
+      - sqlite_data:/app
+
+volumes:
+  sqlite_data:
