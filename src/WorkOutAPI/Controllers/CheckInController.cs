@@ -61,7 +61,7 @@ namespace WorkOutAPI.Controllers
                 return BadRequest("Size should be positive and less or equal than 100");
             }
 
-            var email = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var email = User.FindFirst(ClaimTypes.Email)?.Value;
 
             var user = !string.IsNullOrEmpty(email) ? await userRepository.GetByEmail(email) : null;
 
@@ -83,24 +83,14 @@ namespace WorkOutAPI.Controllers
                 return BadRequest();
             }
 
-            bool isOwner = User.FindFirst(ClaimTypes.NameIdentifier)?.Value == model.UserId.ToString();
-            if(!User.IsInRole("Admin") && !isOwner)
+            if(!int.TryParse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value, out int userId))
             {
-                return Forbid("You are not authorized");
-            }
-
-            //To do: Get User by Claim
-            var user = await userRepository.GetById(model.UserId);
-
-            if(user == null)
-            {
-                return NotFound("User not found");
+                return BadRequest();
             }
 
             var checkIn = new CheckIn()
             {
-                UserId = user.Id,
-                User = user,
+                UserId = userId,
                 Date = model.Date
             };
 
@@ -123,7 +113,7 @@ namespace WorkOutAPI.Controllers
             bool isOwner = User.FindFirst(ClaimTypes.NameIdentifier)?.Value == checkIn.UserId.ToString();
             if(!User.IsInRole("Admin") && !isOwner)
             {
-                return Forbid("You are not authorized");
+                return Forbid();
             }
 
             await checkInRepository.Delete(id);
