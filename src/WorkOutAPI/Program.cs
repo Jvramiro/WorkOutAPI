@@ -11,6 +11,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAnyOrigin", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
+
 var key = builder.Configuration["Security:JwtKey"];
 if (string.IsNullOrEmpty(key)){
     throw new Exception("Security:JwtKey environment variable not configured");
@@ -57,6 +67,9 @@ var app = builder.Build();
 // }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowAnyOrigin");
+
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapGet("/", () => Results.Redirect("/swagger"));
