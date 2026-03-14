@@ -84,13 +84,33 @@ http://localhost:8080/swagger
 
 Swagger provides an interactive UI to test all endpoints.
 
-Main endpoint groups:
+## Endpoints
 
-- Users
-- Login
-- Register
-- Exercises
-- CheckIns
+### Public Endpoints
+No authentication required to access these endpoints:
+*   `POST /api/Login` - Authenticate a user and receive JWT tokens.
+*   `POST /api/Register` - Register a new user in the system.
+*   `GET /api/Exercises` - Retrieve a paginated list of exercises.
+*   `GET /api/Exercises/{id}` - Retrieve a specific exercise by ID.
+
+### Private Endpoints - Admin Role
+These endpoints require a valid JWT token in the `Authorization` header (`Bearer <token>`):
+These endpoints are only accessible by users with the Admin role.
+*   `GET /api/Users` - Retrieve a paginated list of users.
+*   `GET /api/Users/{id}` - Retrieve a specific user by ID.
+*   `POST /api/Exercises` - Create a new exercise.
+*   `PUT /api/Exercises/{id}` - Update an existing exercise.
+*   `DELETE /api/Exercises/{id}` - Remove an exercise from the system.
+*   `GET /api/CheckIn/{userId}` - Retrieve check-ins for a specific user.
+
+### Private Endpoints - Any Role
+These endpoints require a valid JWT token in the `Authorization` header (`Bearer <token>`):
+*   `POST /api/Login/refresh` - Refresh an expired JWT token.
+*   `PUT /api/Users/{id}` - Update a user's details or schedule (User or Admin).
+*   `DELETE /api/Users/{id}` - Remove a user from the system (User or Admin).
+*   `GET /api/CheckIn/self` - Retrieve check-ins for the currently authenticated user.
+*   `POST /api/CheckIn` - Create a new check-in for the currently authenticated user.
+*   `DELETE /api/CheckIn/{id}` - Remove a check-in (User or Admin).
 
 ---
 
@@ -202,6 +222,12 @@ Database file:
 ```
 LocalDB.db
 ```
+
+## Seeders
+
+The database seeds initial data if missing on application startup:
+*   **Admin User**: An initial admin is created with the email `admin@mail.com` and password `12345678`.
+*   **Exercises**: A predefined base list of exercises is seeded from `base_exercises.json`.
 
 ---
 
