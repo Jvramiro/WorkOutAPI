@@ -23,7 +23,7 @@ namespace WorkOutAPI.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> GetList([FromQuery] int page = 1, [FromQuery] int size = 30)
         {
-            if(page < 0 || size < 0)
+            if(page < 1 || size < 1)
             {
                 return BadRequest("Invalid Page or Size parameters");
             }

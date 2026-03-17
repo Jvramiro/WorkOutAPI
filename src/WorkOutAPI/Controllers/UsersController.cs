@@ -26,7 +26,7 @@ namespace WorkOutAPI.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetList([FromQuery] int page = 1, [FromQuery] int size = 10)
         {
-            if(page < 0 || size < 0)
+            if(page < 1 || size < 1)
             {
                 return BadRequest("Invalid Page or Size parameters");
             }

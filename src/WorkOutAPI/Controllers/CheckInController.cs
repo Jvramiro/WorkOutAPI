@@ -26,7 +26,7 @@ namespace WorkOutAPI.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetListByUserId(int userId, [FromQuery] int page = 1, [FromQuery] int size = 10)
         {
-            if(page < 0 || size < 0)
+            if(page < 1 || size < 1)
             {
                 return BadRequest("Invalid Page or Size parameters");
             }
@@ -40,7 +40,7 @@ namespace WorkOutAPI.Controllers
 
             if(user == null)
             {
-                return BadRequest("User not found");
+                return NotFound("User not found");
             }
 
             var list = await checkInRepository.GetListByUserId(user.Id, page, size);
@@ -52,7 +52,7 @@ namespace WorkOutAPI.Controllers
         [Authorize]
         public async Task<IActionResult> GetListBySelfId([FromQuery] int page = 1, [FromQuery] int size = 10)
         {
-            if(page < 0 || size < 0)
+            if(page < 1 || size < 1)
             {
                 return BadRequest("Invalid Page or Size parameters");
             }
@@ -68,7 +68,7 @@ namespace WorkOutAPI.Controllers
 
             if(user == null)
             {
-                return BadRequest("User not found");
+                return NotFound("User not found");
             }
 
             var list = await checkInRepository.GetListByUserId(user.Id, page, size);

@@ -35,9 +35,7 @@ namespace WorkOutAPI.Controllers
                 return Conflict("Email already registered");
             }
 
-            //To do: Hash Password
             string passwordHash = PasswordHashService.HashPassword(model.Password);
-            //To do: Refresh Token
             string refreshToken = Guid.NewGuid().ToString();
 
             var user = new User()
