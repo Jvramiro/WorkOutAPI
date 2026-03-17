@@ -109,7 +109,7 @@ namespace WorkOutAPI.Controllers
 
             if(checkIn == null)
             {
-                return NotFound("User not found");
+                return NotFound("CheckIn not found");
             }
 
             bool isOwner = User.FindFirst(ClaimTypes.NameIdentifier)?.Value == checkIn.UserId.ToString();
