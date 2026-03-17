@@ -80,7 +80,7 @@ public class CheckInControllerTests
     [Theory]
     [InlineData(-1, 1)]
     [InlineData(1, -1)]
-    [InlineData(1,1000)]
+    [InlineData(1, 1000)]
     public async Task GetListByUserId_ShouldReturnBadRequest_WhenInvalidPageOrSize(int page, int size)
     {
         //Arrange
@@ -153,7 +153,7 @@ public class CheckInControllerTests
     public async Task Create_ShouldReturnBadRequest_WhenModelStateInvalid()
     {
         //Arrange
-        controller.ModelState.AddModelError("", "");
+        controller.ModelState.AddModelError("UserId", "Required");
 
         //Act
         var result = await controller.Create(new CheckInCreateDTO());
@@ -226,7 +226,7 @@ public class CheckInControllerTests
     }
 
     [Fact]
-    public async Task Remove_ShouldReturnOk_WhenIdValid()
+    public async Task Remove_ShouldReturnOk_WhenValidParameters()
     {
         //Arrange
         SetAuthenticatedUserClaim(ClaimTypes.NameIdentifier, "0");
