@@ -231,6 +231,31 @@ The database seeds initial data if missing on application startup:
 
 ---
 
+# Testing
+
+The project includes unit tests for the controllers to ensure the business logic and API endpoints behave correctly.
+
+## Running Tests
+
+To run the unit tests, use the following command from the root directory:
+
+```bash
+dotnet test
+```
+
+## Test Coverage
+
+The following controllers have unit test coverage:
+*   **CheckInController**: Tests for creating, retrieving, and deleting check-ins.
+*   **ExercisesController**: Tests for CRUD operations on exercises.
+*   **LoginController**: Tests for user authentication and token refresh.
+*   **RegisterController**: Tests for new user registration.
+*   **UsersController**: Tests for user management and profile updates.
+
+The tests use **xUnit** as the testing framework and **Moq** for mocking dependencies.
+
+---
+
 # Security
 
 Secrets are not stored in the repository.
@@ -241,7 +266,5 @@ Configuration is handled using:
 - **Environment Variables** (Docker)
 
 ---
-
-# License
 
 This project is available under the MIT License.

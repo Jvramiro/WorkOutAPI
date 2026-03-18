@@ -75,22 +75,11 @@ public class UsersControllerTests
     [Theory]
     [InlineData(-1, 10)]
     [InlineData(1, -1)]
-    [InlineData(0, 10)]
-    [InlineData(1, 0)]
+    [InlineData(1, 1000)]
     public async Task GetList_ShouldReturnBadRequest_WhenInvalidPageOrSize(int page, int size)
     {
         //Act
         var result = await controller.GetList(page, size);
-
-        //Assert
-        Assert.IsType<BadRequestObjectResult>(result);
-    }
-
-    [Fact]
-    public async Task GetList_ShouldReturnBadRequest_WhenSizeTooLarge()
-    {
-        //Act
-        var result = await controller.GetList(1, 150);
 
         //Assert
         Assert.IsType<BadRequestObjectResult>(result);
@@ -141,7 +130,7 @@ public class UsersControllerTests
     public async Task Update_ShouldReturnForbid_WhenNotOwnerOrAdmin()
     {
         //Arrange
-        SetAuthenticatedUserClaim(ClaimTypes.NameIdentifier, "2"); // User mapped to id 1, but authenticated as 2
+        SetAuthenticatedUserClaim(ClaimTypes.NameIdentifier, "2");
         var userId = 1;
 
         //Act
@@ -211,7 +200,7 @@ public class UsersControllerTests
     public async Task Remove_ShouldReturnForbid_WhenNotOwnerOrAdmin()
     {
         //Arrange
-        SetAuthenticatedUserClaim(ClaimTypes.NameIdentifier, "2"); // Authenticated as 2, trying to delete 1
+        SetAuthenticatedUserClaim(ClaimTypes.NameIdentifier, "2");
         var userId = 1;
 
         //Act

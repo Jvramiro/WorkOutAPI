@@ -110,6 +110,7 @@ public class CheckInControllerTests
     [Theory]
     [InlineData(-1, 1)]
     [InlineData(1, -1)]
+    [InlineData(1, 1000)]
     public async Task GetListBySelfId_ShouldReturnBadRequest_WhenInvalidPageOrSize(int page, int size)
     {
         //Act
