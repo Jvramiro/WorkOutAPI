@@ -11,15 +11,15 @@ namespace WorkOutAPI.Tests.Controllers;
 public class RegisterControllerTests
 {
     private readonly Mock<IUserRepository> mockUserRepository;
-    private readonly Mock<IUnityOfWork> mockUnityOfWork;
+    private readonly Mock<IUnitOfWork> mockUnitOfWork;
     private readonly RegisterController controller;
 
     public RegisterControllerTests()
     {
         mockUserRepository = new Mock<IUserRepository>();
-        mockUnityOfWork = new Mock<IUnityOfWork>();
+        mockUnitOfWork = new Mock<IUnitOfWork>();
 
-        controller = new RegisterController(mockUserRepository.Object, mockUnityOfWork.Object);
+        controller = new RegisterController(mockUserRepository.Object, mockUnitOfWork.Object);
     }
 
     [Fact]
@@ -57,7 +57,7 @@ public class RegisterControllerTests
         var email = "new@test.com";
         mockUserRepository.Setup(r => r.GetByEmail(email)).ReturnsAsync((User?)null);
         mockUserRepository.Setup(r => r.Add(It.IsAny<User>())).Returns(Task.CompletedTask);
-        mockUnityOfWork.Setup(u => u.Commit()).Returns(Task.CompletedTask);
+        mockUnitOfWork.Setup(u => u.Commit()).Returns(Task.CompletedTask);
 
         //Act
         var result = await controller.Register(new UserRegisterDTO { Email = email, Password = "password123", Username = "NewUser" });

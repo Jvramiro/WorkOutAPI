@@ -13,12 +13,12 @@ namespace WorkOutAPI.Controllers
     public class LoginController : ControllerBase
     {
         private IUserRepository userRepository;
-        private IUnityOfWork unityOfWork;
+        private IUnitOfWork UnitOfWork;
         private TokenService tokenService;
-        public LoginController(IUserRepository userRepository, IUnityOfWork unityOfWork, TokenService tokenService)
+        public LoginController(IUserRepository userRepository, IUnitOfWork UnitOfWork, TokenService tokenService)
         {
             this.userRepository = userRepository;
-            this.unityOfWork = unityOfWork;
+            this.UnitOfWork = UnitOfWork;
             this.tokenService = tokenService;
         }
 
@@ -44,7 +44,7 @@ namespace WorkOutAPI.Controllers
 
             user.RefreshToken = refreshToken;
             await userRepository.Update(user);
-            await unityOfWork.Commit();
+            await UnitOfWork.Commit();
 
             var result = new TokenDTO(token, refreshToken);
             return Ok(result);
@@ -68,7 +68,7 @@ namespace WorkOutAPI.Controllers
 
             user.RefreshToken = newRefreshToken;
             await userRepository.Update(user);
-            await unityOfWork.Commit();
+            await UnitOfWork.Commit();
 
             var result = new TokenDTO(newToken, newRefreshToken);
             return Ok(result);

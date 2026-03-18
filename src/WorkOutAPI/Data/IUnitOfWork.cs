@@ -1,6 +1,6 @@
 namespace WorkOutAPI.Data
 {
-    public interface IUnityOfWork
+    public interface IUnitOfWork
     {
         Task Commit();
     }

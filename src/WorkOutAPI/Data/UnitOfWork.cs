@@ -1,9 +1,9 @@
 namespace WorkOutAPI.Data
 {
-    public class UnityOfWork : IUnityOfWork
+    public class UnitOfWork : IUnitOfWork
     {
         private readonly AppDbContext dbContext;
-        public UnityOfWork(AppDbContext dbContext)
+        public UnitOfWork(AppDbContext dbContext)
         {
             this.dbContext = dbContext;
         }

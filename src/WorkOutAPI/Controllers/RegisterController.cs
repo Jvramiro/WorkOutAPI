@@ -13,11 +13,11 @@ namespace WorkOutAPI.Controllers
     public class RegisterController : ControllerBase
     {
         private IUserRepository userRepository;
-        private IUnityOfWork unityOfWork;
-        public RegisterController(IUserRepository  userRepository, IUnityOfWork unityOfWork)
+        private IUnitOfWork UnitOfWork;
+        public RegisterController(IUserRepository  userRepository, IUnitOfWork UnitOfWork)
         {
             this.userRepository = userRepository;
-            this.unityOfWork = unityOfWork;
+            this.UnitOfWork = UnitOfWork;
         }
 
         [HttpPost]
@@ -48,7 +48,7 @@ namespace WorkOutAPI.Controllers
             };
 
             await userRepository.Add(user);
-            await unityOfWork.Commit();
+            await UnitOfWork.Commit();
             return Created($"/users/{user.Id}", $"User Successfully created");
         }
 

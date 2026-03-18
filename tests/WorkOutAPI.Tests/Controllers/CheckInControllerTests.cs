@@ -15,7 +15,7 @@ public class CheckInControllerTests
 
     private readonly Mock<IUserRepository> mockUserRepository;
     private readonly Mock<ICheckInRepository> mockCheckInRepository;
-    private readonly Mock<IUnityOfWork> mockUnityOfWork;
+    private readonly Mock<IUnitOfWork> mockUnitOfWork;
     private readonly CheckInController controller;
     
     private readonly User mockUser;
@@ -26,9 +26,9 @@ public class CheckInControllerTests
     {
         mockUserRepository = new Mock<IUserRepository>();
         mockCheckInRepository = new Mock<ICheckInRepository>();
-        mockUnityOfWork = new Mock<IUnityOfWork>();
+        mockUnitOfWork = new Mock<IUnitOfWork>();
 
-        controller = new CheckInController(mockUserRepository.Object, mockCheckInRepository.Object, mockUnityOfWork.Object);
+        controller = new CheckInController(mockUserRepository.Object, mockCheckInRepository.Object, mockUnitOfWork.Object);
 
         mockUser = new User()
         {
@@ -182,7 +182,7 @@ public class CheckInControllerTests
         //Arrange
         SetAuthenticatedUserClaim(ClaimTypes.NameIdentifier, "0");
         mockCheckInRepository.Setup(r => r.Add(It.IsAny<CheckIn>())).Returns(Task.CompletedTask);
-        mockUnityOfWork.Setup(u => u.Commit()).Returns(Task.CompletedTask);
+        mockUnitOfWork.Setup(u => u.Commit()).Returns(Task.CompletedTask);
         
         //Act
         var result = await controller.Create(new CheckInCreateDTO());
@@ -240,7 +240,7 @@ public class CheckInControllerTests
 
         mockCheckInRepository.Setup(r => r.GetById(It.IsAny<int>())).ReturnsAsync(mockCheckIn);
         mockCheckInRepository.Setup(r => r.Delete(It.IsAny<int>())).Returns(Task.CompletedTask);
-        mockUnityOfWork.Setup(u => u.Commit()).Returns(Task.CompletedTask);
+        mockUnitOfWork.Setup(u => u.Commit()).Returns(Task.CompletedTask);
         
         //Act
         var result = await controller.Remove(checkInId);

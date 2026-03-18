@@ -15,7 +15,7 @@ namespace WorkOutAPI.Tests.Controllers;
 public class LoginControllerTests
 {
     private readonly Mock<IUserRepository> mockUserRepository;
-    private readonly Mock<IUnityOfWork> mockUnityOfWork;
+    private readonly Mock<IUnitOfWork> mockUnitOfWork;
     private readonly Mock<IConfiguration> mockConfiguration;
     private readonly TokenService tokenService;
     private readonly LoginController controller;
@@ -25,14 +25,14 @@ public class LoginControllerTests
     public LoginControllerTests()
     {
         mockUserRepository = new Mock<IUserRepository>();
-        mockUnityOfWork = new Mock<IUnityOfWork>();
+        mockUnitOfWork = new Mock<IUnitOfWork>();
         mockConfiguration = new Mock<IConfiguration>();
 
         mockConfiguration.Setup(c => c["Security:JwtKey"]).Returns("ThisIsAVerySecretKeyThatIsAtLeast32BytesLong!!");
 
         tokenService = new TokenService(mockConfiguration.Object);
 
-        controller = new LoginController(mockUserRepository.Object, mockUnityOfWork.Object, tokenService);
+        controller = new LoginController(mockUserRepository.Object, mockUnitOfWork.Object, tokenService);
 
         mockUser = new User()
         {
@@ -92,7 +92,7 @@ public class LoginControllerTests
         //Arrange
         mockUserRepository.Setup(r => r.GetByEmail(mockUser.Email)).ReturnsAsync(mockUser);
         mockUserRepository.Setup(r => r.Update(It.IsAny<User>())).Returns(Task.CompletedTask);
-        mockUnityOfWork.Setup(u => u.Commit()).Returns(Task.CompletedTask);
+        mockUnitOfWork.Setup(u => u.Commit()).Returns(Task.CompletedTask);
 
         //Act
         var result = await controller.Login(new UserLoginDTO(mockUser.Email, "password123"));
@@ -136,7 +136,7 @@ public class LoginControllerTests
         SetAuthenticatedUserClaim(ClaimTypes.Email, mockUser.Email);
         mockUserRepository.Setup(r => r.GetByEmail(mockUser.Email)).ReturnsAsync(mockUser);
         mockUserRepository.Setup(r => r.Update(It.IsAny<User>())).Returns(Task.CompletedTask);
-        mockUnityOfWork.Setup(u => u.Commit()).Returns(Task.CompletedTask);
+        mockUnitOfWork.Setup(u => u.Commit()).Returns(Task.CompletedTask);
 
         //Act
         var result = await controller.Refresh(mockUser.RefreshToken!);

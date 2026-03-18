@@ -14,7 +14,7 @@ public class UsersControllerTests
 {
     private readonly Mock<IUserRepository> mockUserRepository;
     private readonly Mock<IExerciseRepository> mockExerciseRepository;
-    private readonly Mock<IUnityOfWork> mockUnityOfWork;
+    private readonly Mock<IUnitOfWork> mockUnitOfWork;
     private readonly UsersController controller;
     
     private readonly User mockUser;
@@ -24,9 +24,9 @@ public class UsersControllerTests
     {
         mockUserRepository = new Mock<IUserRepository>();
         mockExerciseRepository = new Mock<IExerciseRepository>();
-        mockUnityOfWork = new Mock<IUnityOfWork>();
+        mockUnitOfWork = new Mock<IUnitOfWork>();
 
-        controller = new UsersController(mockUserRepository.Object, mockExerciseRepository.Object, mockUnityOfWork.Object);
+        controller = new UsersController(mockUserRepository.Object, mockExerciseRepository.Object, mockUnitOfWork.Object);
 
         mockUser = new User()
         {
@@ -185,7 +185,7 @@ public class UsersControllerTests
         mockExerciseRepository.Setup(r => r.GetById(1)).ReturnsAsync(exercise);
 
         mockUserRepository.Setup(r => r.Update(It.IsAny<User>())).Returns(Task.CompletedTask);
-        mockUnityOfWork.Setup(u => u.Commit()).Returns(Task.CompletedTask);
+        mockUnitOfWork.Setup(u => u.Commit()).Returns(Task.CompletedTask);
 
         var model = new UserUpdateDTO("UpdatedName", new List<int> { 1 });
 
@@ -233,7 +233,7 @@ public class UsersControllerTests
         SetAuthenticatedUserClaim(ClaimTypes.NameIdentifier, userId.ToString());
         mockUserRepository.Setup(r => r.GetById(userId)).ReturnsAsync(mockUser);
         mockUserRepository.Setup(r => r.Delete(userId)).Returns(Task.CompletedTask);
-        mockUnityOfWork.Setup(u => u.Commit()).Returns(Task.CompletedTask);
+        mockUnitOfWork.Setup(u => u.Commit()).Returns(Task.CompletedTask);
 
         //Act
         var result = await controller.Remove(userId);

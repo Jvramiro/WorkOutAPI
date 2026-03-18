@@ -11,7 +11,7 @@ namespace WorkOutAPI.Tests.Controllers;
 public class ExercisesControllerTests
 {
     private readonly Mock<IExerciseRepository> mockExerciseRepository;
-    private readonly Mock<IUnityOfWork> mockUnityOfWork;
+    private readonly Mock<IUnitOfWork> mockUnitOfWork;
     private readonly ExercisesController controller;
     
     private readonly Exercise mockExercise;
@@ -20,9 +20,9 @@ public class ExercisesControllerTests
     public ExercisesControllerTests()
     {
         mockExerciseRepository = new Mock<IExerciseRepository>();
-        mockUnityOfWork = new Mock<IUnityOfWork>();
+        mockUnitOfWork = new Mock<IUnitOfWork>();
 
-        controller = new ExercisesController(mockExerciseRepository.Object, mockUnityOfWork.Object);
+        controller = new ExercisesController(mockExerciseRepository.Object, mockUnitOfWork.Object);
 
         mockExercise = new Exercise()
         {
@@ -109,7 +109,7 @@ public class ExercisesControllerTests
     {
         //Arrange
         mockExerciseRepository.Setup(r => r.Add(It.IsAny<Exercise>())).Returns(Task.CompletedTask);
-        mockUnityOfWork.Setup(u => u.Commit()).Returns(Task.CompletedTask);
+        mockUnitOfWork.Setup(u => u.Commit()).Returns(Task.CompletedTask);
 
         //Act
         var result = await controller.Create(new ExerciseCreateDTO("Pull Up", Enums.MuscleGroup.Back));
@@ -152,7 +152,7 @@ public class ExercisesControllerTests
         var exerciseId = 1;
         mockExerciseRepository.Setup(r => r.GetById(exerciseId)).ReturnsAsync(mockExercise);
         mockExerciseRepository.Setup(r => r.Update(It.IsAny<Exercise>())).Returns(Task.CompletedTask);
-        mockUnityOfWork.Setup(u => u.Commit()).Returns(Task.CompletedTask);
+        mockUnitOfWork.Setup(u => u.Commit()).Returns(Task.CompletedTask);
 
         //Act
         var result = await controller.Update(exerciseId, new ExerciseUpdateDTO("Updated Name", null));
@@ -182,7 +182,7 @@ public class ExercisesControllerTests
         var exerciseId = 1;
         mockExerciseRepository.Setup(r => r.GetById(exerciseId)).ReturnsAsync(mockExercise);
         mockExerciseRepository.Setup(r => r.Delete(exerciseId)).Returns(Task.CompletedTask);
-        mockUnityOfWork.Setup(u => u.Commit()).Returns(Task.CompletedTask);
+        mockUnitOfWork.Setup(u => u.Commit()).Returns(Task.CompletedTask);
 
         //Act
         var result = await controller.Remove(exerciseId);

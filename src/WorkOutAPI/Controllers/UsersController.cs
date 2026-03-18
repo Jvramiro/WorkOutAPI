@@ -14,12 +14,12 @@ namespace WorkOutAPI.Controllers
     {
         private IUserRepository userRepository;
         private IExerciseRepository exerciseRepository;
-        private IUnityOfWork unityOfWork;
-        public UsersController(IUserRepository userRepository, IExerciseRepository exerciseRepository, IUnityOfWork unityOfWork)
+        private IUnitOfWork UnitOfWork;
+        public UsersController(IUserRepository userRepository, IExerciseRepository exerciseRepository, IUnitOfWork UnitOfWork)
         {
             this.userRepository = userRepository;
             this.exerciseRepository = exerciseRepository;
-            this.unityOfWork = unityOfWork;
+            this.UnitOfWork = UnitOfWork;
         }
 
         [HttpGet]
@@ -98,7 +98,7 @@ namespace WorkOutAPI.Controllers
             }
 
             await userRepository.Update(user);
-            await unityOfWork.Commit();
+            await UnitOfWork.Commit();
 
             return Ok($"User {user.Username} successfully updated");
         }
@@ -121,7 +121,7 @@ namespace WorkOutAPI.Controllers
             }
 
             await userRepository.Delete(id);
-            await unityOfWork.Commit();
+            await UnitOfWork.Commit();
 
             return  Ok($"User {user.Username} successfully removed");
         }

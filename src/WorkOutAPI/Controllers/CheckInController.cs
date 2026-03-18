@@ -14,12 +14,12 @@ namespace WorkOutAPI.Controllers
     {
         private IUserRepository userRepository;
         private ICheckInRepository checkInRepository;
-        private IUnityOfWork unityOfWork;
-        public CheckInController(IUserRepository  userRepository, ICheckInRepository checkInRepository, IUnityOfWork unityOfWork)
+        private IUnitOfWork UnitOfWork;
+        public CheckInController(IUserRepository  userRepository, ICheckInRepository checkInRepository, IUnitOfWork UnitOfWork)
         {
             this.userRepository = userRepository;
             this.checkInRepository = checkInRepository;
-            this.unityOfWork = unityOfWork;
+            this.UnitOfWork = UnitOfWork;
         }
 
         [HttpGet("{userId}")]
@@ -97,7 +97,7 @@ namespace WorkOutAPI.Controllers
             };
 
             await checkInRepository.Add(checkIn);
-            await unityOfWork.Commit();
+            await UnitOfWork.Commit();
             return Created($"/checkin/{checkIn.Id}", $"CheckIn Successfully created");
         }
 
@@ -119,7 +119,7 @@ namespace WorkOutAPI.Controllers
             }
 
             await checkInRepository.Delete(id);
-            await unityOfWork.Commit();
+            await UnitOfWork.Commit();
             return Ok($"CheckIn {id} sucessfully removed");
         }
     }

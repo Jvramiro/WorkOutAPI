@@ -12,11 +12,11 @@ namespace WorkOutAPI.Controllers
     public class ExercisesController : ControllerBase
     {
         private IExerciseRepository exerciseRepository;
-        private IUnityOfWork unityOfWork;
-        public ExercisesController(IExerciseRepository exerciseRepository, IUnityOfWork unityOfWork)
+        private IUnitOfWork UnitOfWork;
+        public ExercisesController(IExerciseRepository exerciseRepository, IUnitOfWork UnitOfWork)
         {
             this.exerciseRepository = exerciseRepository;
-            this.unityOfWork = unityOfWork;
+            this.UnitOfWork = UnitOfWork;
         }
 
         [HttpGet]
@@ -67,7 +67,7 @@ namespace WorkOutAPI.Controllers
             };
 
             await exerciseRepository.Add(exercise);
-            await unityOfWork.Commit();
+            await UnitOfWork.Commit();
 
             return Ok($"Exercise {exercise.Name} successfully created");
         }
@@ -92,7 +92,7 @@ namespace WorkOutAPI.Controllers
             exercise.Group = model.Group ?? exercise.Group;
 
             await exerciseRepository.Update(exercise);
-            await unityOfWork.Commit();
+            await UnitOfWork.Commit();
             
             return Ok($"Exercise {exercise.Name} successfully updated");
         }
@@ -109,7 +109,7 @@ namespace WorkOutAPI.Controllers
             }
 
             await exerciseRepository.Delete(id);
-            await unityOfWork.Commit();
+            await UnitOfWork.Commit();
             
             return Ok($"Exercise {exercise.Name} successfully removed");
         }
